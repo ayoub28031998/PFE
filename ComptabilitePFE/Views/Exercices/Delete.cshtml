@@ -1,0 +1,82 @@
+﻿@model ComptabilitePFE.Exercice
+
+@{
+    ViewBag.Title = "Delete";
+}
+<h2>Exercice</h2>
+<div class="card card-danger cardWidth mx-auto">
+    <div class="card-header">
+        <h3 class="card-title"><b>Delete</b></h3>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+
+    <div class="card-body">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-7">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.CodeExercice, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DisplayFor(model => model.CodeExercice, new { htmlAttributes = new { @class = "form-control" } })
+
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.DateDebut, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DisplayFor(model => model.DateDebut)
+                    </div>
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.DateFin, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DisplayFor(model => model.DateFin)
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-5">
+
+                @Html.LabelFor(model => model.TypeSaisie, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-10">
+                    <div>
+                        <label>
+                            @Html.RadioButtonFor(m => m.TypeSaisie, "m", new { disabled = "disabled" }) Mensuel
+                        </label><br />
+                        <label>
+                            @Html.RadioButtonFor(m => m.TypeSaisie, "J", new { disabled = "disabled" })Journaliere
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card-footer">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this item?');"/>
+            <a href="@Url.Action("Index","Exercices")" class="btn btn-outline-secondary">BackToList</a>
+          
+        </div>
+        }
+    </div>
+</div>

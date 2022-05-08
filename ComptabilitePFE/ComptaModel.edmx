@@ -1,0 +1,681 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="I2S_Compta2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="CodeClient" />
+          </Key>
+          <Property Name="CodeClient" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="RaisonSociale" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Contact" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Adresse" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Tel1" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Tel2" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="MatriculeFiscale" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="NbSociete" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="DateCreation" Type="datetime" Nullable="false" />
+          <Property Name="Observation" Type="nvarchar" MaxLength="300" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Exercice">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+            <PropertyRef Name="CodeExercice" />
+          </Key>
+          <Property Name="CodeSociete" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeExercice" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="DateDebut" Type="date" Nullable="false" />
+          <Property Name="DateFin" Type="date" Nullable="false" />
+          <Property Name="Cloturer" Type="bit" Nullable="false" />
+          <Property Name="TypeSaisie" Type="nvarchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Journal">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+            <PropertyRef Name="CodeJournal" />
+          </Key>
+          <Property Name="CodeSociete" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeJournal" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Libelle" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="AutoriserControle" Type="bit" Nullable="false" />
+          <Property Name="NumeroCompte" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Tresorerie" Type="bit" Nullable="false" />
+          <Property Name="Ouverture" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LignePieceComptable">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+            <PropertyRef Name="CodePiece" />
+            <PropertyRef Name="CodeJournal" />
+            <PropertyRef Name="CodeExercice" />
+            <PropertyRef Name="NumeroCompte" />
+            <PropertyRef Name="NumeroOrdre" />
+          </Key>
+          <Property Name="CodeSociete" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodePiece" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeJournal" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="CodeExercice" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="NumeroCompte" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="NumeroOrdre" Type="int" Nullable="false" />
+          <Property Name="Debit" Type="numeric" Precision="19" Scale="3" Nullable="false" />
+          <Property Name="Credit" Type="numeric" Precision="19" Scale="3" Nullable="false" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="DateReference" Type="datetime" />
+          <Property Name="NumeroLettrage" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="NumeroRapprochement" Type="nvarchar" MaxLength="6" />
+        </EntityType>
+        <EntityType Name="ParametrageBilan">
+          <Key>
+            <PropertyRef Name="CodeRubrique" />
+            <PropertyRef Name="NumeroCompte" />
+          </Key>
+          <Property Name="CodeRubrique" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="NumeroCompte" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Sens" Type="nvarchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ParametrageEtatResultat">
+          <Key>
+            <PropertyRef Name="CodeRubrique" />
+            <PropertyRef Name="NumeroCompte" />
+          </Key>
+          <Property Name="CodeRubrique" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="NumeroCompte" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Sens" Type="nvarchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PieceComptable">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+            <PropertyRef Name="CodePiece" />
+            <PropertyRef Name="CodeJournal" />
+            <PropertyRef Name="CodeExercice" />
+          </Key>
+          <Property Name="CodeSociete" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodePiece" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeJournal" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="CodeExercice" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="DateEcriture" Type="datetime" Nullable="false" />
+          <Property Name="TotalPiece" Type="numeric" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="LibelleEcriture" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="NomUtilisateur" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="DateCreation" Type="datetime" Nullable="false" />
+          <Property Name="HeureCreation" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlanComptable">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+            <PropertyRef Name="NumeroCompte" />
+          </Key>
+          <Property Name="CodeSociete" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="NumeroCompte" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Libelle" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="TypeCompte" Type="nvarchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RubriqueBilan">
+          <Key>
+            <PropertyRef Name="CodeRubrique" />
+          </Key>
+          <Property Name="CodeRubrique" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="CodeRubriqueParent" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="Libelle" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Nature" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="Note" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Signe" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="Justification" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RubriqueEtatResultat">
+          <Key>
+            <PropertyRef Name="CodeRubrique" />
+          </Key>
+          <Property Name="CodeRubrique" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="CodeRubriqueParent" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="Libelle" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Nature" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="Note" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Signe" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="Justification" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Societe">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+          </Key>
+          <Property Name="CodeSociete" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeClient" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="RaisonSociete" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="CapitalSociete" Type="numeric" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="Adresse" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Tel1" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Tel2" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="MatriculeFiscale" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Observation" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="DateCreation" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Utilisateur">
+          <Key>
+            <PropertyRef Name="NomUtilisateur" />
+          </Key>
+          <Property Name="NomUtilisateur" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="CodeClient" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="NomPrenom" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="MotPasse" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Journal_Societe">
+          <End Role="Societe" Type="Self.Societe" Multiplicity="1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Societe">
+              <PropertyRef Name="CodeSociete" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="CodeSociete" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LignePieceComptable_PieceComptable">
+          <End Role="PieceComptable" Type="Self.PieceComptable" Multiplicity="1" />
+          <End Role="LignePieceComptable" Type="Self.LignePieceComptable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PieceComptable">
+              <PropertyRef Name="CodeSociete" />
+              <PropertyRef Name="CodePiece" />
+              <PropertyRef Name="CodeJournal" />
+              <PropertyRef Name="CodeExercice" />
+            </Principal>
+            <Dependent Role="LignePieceComptable">
+              <PropertyRef Name="CodeSociete" />
+              <PropertyRef Name="CodePiece" />
+              <PropertyRef Name="CodeJournal" />
+              <PropertyRef Name="CodeExercice" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParametrageBilan_RubriqueBilan">
+          <End Role="RubriqueBilan" Type="Self.RubriqueBilan" Multiplicity="1" />
+          <End Role="ParametrageBilan" Type="Self.ParametrageBilan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RubriqueBilan">
+              <PropertyRef Name="CodeRubrique" />
+            </Principal>
+            <Dependent Role="ParametrageBilan">
+              <PropertyRef Name="CodeRubrique" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="I2S_Compta2ModelStoreContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exercice" EntityType="Self.Exercice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Journal" EntityType="Self.Journal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LignePieceComptable" EntityType="Self.LignePieceComptable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParametrageBilan" EntityType="Self.ParametrageBilan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParametrageEtatResultat" EntityType="Self.ParametrageEtatResultat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PieceComptable" EntityType="Self.PieceComptable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlanComptable" EntityType="Self.PlanComptable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RubriqueBilan" EntityType="Self.RubriqueBilan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RubriqueEtatResultat" EntityType="Self.RubriqueEtatResultat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Societe" EntityType="Self.Societe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Journal_Societe" Association="Self.FK_Journal_Societe">
+            <End Role="Societe" EntitySet="Societe" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LignePieceComptable_PieceComptable" Association="Self.FK_LignePieceComptable_PieceComptable">
+            <End Role="PieceComptable" EntitySet="PieceComptable" />
+            <End Role="LignePieceComptable" EntitySet="LignePieceComptable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParametrageBilan_RubriqueBilan" Association="Self.FK_ParametrageBilan_RubriqueBilan">
+            <End Role="RubriqueBilan" EntitySet="RubriqueBilan" />
+            <End Role="ParametrageBilan" EntitySet="ParametrageBilan" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="I2S_Compta2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="I2S_Compta2Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Client" EntityType="I2S_Compta2Model.Client" />
+          <EntitySet Name="Exercice" EntityType="I2S_Compta2Model.Exercice" />
+          <EntitySet Name="Journal" EntityType="I2S_Compta2Model.Journal" />
+          <EntitySet Name="LignePieceComptable" EntityType="I2S_Compta2Model.LignePieceComptable" />
+          <EntitySet Name="ParametrageBilan" EntityType="I2S_Compta2Model.ParametrageBilan" />
+          <EntitySet Name="ParametrageEtatResultat" EntityType="I2S_Compta2Model.ParametrageEtatResultat" />
+          <EntitySet Name="PieceComptable" EntityType="I2S_Compta2Model.PieceComptable" />
+          <EntitySet Name="PlanComptable" EntityType="I2S_Compta2Model.PlanComptable" />
+          <EntitySet Name="RubriqueBilan" EntityType="I2S_Compta2Model.RubriqueBilan" />
+          <EntitySet Name="RubriqueEtatResultat" EntityType="I2S_Compta2Model.RubriqueEtatResultat" />
+          <EntitySet Name="Societe" EntityType="I2S_Compta2Model.Societe" />
+          <EntitySet Name="Utilisateur" EntityType="I2S_Compta2Model.Utilisateur" />
+          <AssociationSet Name="FK_ParametrageBilan_RubriqueBilan" Association="I2S_Compta2Model.FK_ParametrageBilan_RubriqueBilan">
+            <End Role="RubriqueBilan" EntitySet="RubriqueBilan" />
+            <End Role="ParametrageBilan" EntitySet="ParametrageBilan" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exercice_Exercice" Association="I2S_Compta2Model.FK_Exercice_Exercice">
+            <End Role="Exercice" EntitySet="Exercice" />
+            <End Role="Exercice1" EntitySet="Exercice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Journal_Societe" Association="I2S_Compta2Model.FK_Journal_Societe">
+            <End Role="Societe" EntitySet="Societe" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LignePieceComptable_PieceComptable" Association="I2S_Compta2Model.FK_LignePieceComptable_PieceComptable">
+            <End Role="PieceComptable" EntitySet="PieceComptable" />
+            <End Role="LignePieceComptable" EntitySet="LignePieceComptable" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="CodeClient" />
+          </Key>
+          <Property Name="CodeClient" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="RaisonSociale" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Contact" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Adresse" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Tel1" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Tel2" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="MatriculeFiscale" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="NbSociete" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Observation" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Exercice">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+            <PropertyRef Name="CodeExercice" />
+          </Key>
+          <Property Name="CodeSociete" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CodeExercice" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="DateDebut" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateFin" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Cloturer" Type="Boolean" Nullable="false" />
+          <Property Name="TypeSaisie" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Exercice1" Relationship="I2S_Compta2Model.FK_Exercice_Exercice" FromRole="Exercice" ToRole="Exercice1" />
+          <NavigationProperty Name="Exercice2" Relationship="I2S_Compta2Model.FK_Exercice_Exercice" FromRole="Exercice1" ToRole="Exercice" />
+        </EntityType>
+        <EntityType Name="Journal">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+            <PropertyRef Name="CodeJournal" />
+          </Key>
+          <Property Name="CodeSociete" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CodeJournal" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Libelle" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="AutoriserControle" Type="Boolean" Nullable="false" />
+          <Property Name="NumeroCompte" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Tresorerie" Type="Boolean" Nullable="false" />
+          <Property Name="Ouverture" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Societe" Relationship="I2S_Compta2Model.FK_Journal_Societe" FromRole="Journal" ToRole="Societe" />
+          </EntityType>
+        <EntityType Name="LignePieceComptable">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+            <PropertyRef Name="CodePiece" />
+            <PropertyRef Name="CodeJournal" />
+            <PropertyRef Name="CodeExercice" />
+            <PropertyRef Name="NumeroCompte" />
+            <PropertyRef Name="NumeroOrdre" />
+          </Key>
+          <Property Name="CodeSociete" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CodePiece" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CodeJournal" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="CodeExercice" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="NumeroCompte" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NumeroOrdre" Type="Int32" Nullable="false" />
+          <Property Name="Debit" Type="Decimal" Nullable="false" Precision="19" Scale="3" />
+          <Property Name="Credit" Type="Decimal" Nullable="false" Precision="19" Scale="3" />
+          <Property Name="Reference" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="DateReference" Type="DateTime" Precision="3" />
+          <Property Name="NumeroLettrage" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="NumeroRapprochement" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PieceComptable" Relationship="I2S_Compta2Model.FK_LignePieceComptable_PieceComptable" FromRole="LignePieceComptable" ToRole="PieceComptable" />
+        </EntityType>
+        <EntityType Name="ParametrageBilan">
+          <Key>
+            <PropertyRef Name="CodeRubrique" />
+            <PropertyRef Name="NumeroCompte" />
+          </Key>
+          <Property Name="CodeRubrique" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="NumeroCompte" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Sens" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RubriqueBilan" Relationship="I2S_Compta2Model.FK_ParametrageBilan_RubriqueBilan" FromRole="ParametrageBilan" ToRole="RubriqueBilan" />
+        </EntityType>
+        <EntityType Name="ParametrageEtatResultat">
+          <Key>
+            <PropertyRef Name="CodeRubrique" />
+            <PropertyRef Name="NumeroCompte" />
+          </Key>
+          <Property Name="CodeRubrique" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="NumeroCompte" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Sens" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PieceComptable">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+            <PropertyRef Name="CodePiece" />
+            <PropertyRef Name="CodeJournal" />
+            <PropertyRef Name="CodeExercice" />
+          </Key>
+          <Property Name="CodeSociete" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CodePiece" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CodeJournal" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="CodeExercice" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="DateEcriture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TotalPiece" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+          <Property Name="LibelleEcriture" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="NomUtilisateur" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HeureCreation" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="LignePieceComptables" Relationship="I2S_Compta2Model.FK_LignePieceComptable_PieceComptable" FromRole="PieceComptable" ToRole="LignePieceComptable" />
+        </EntityType>
+        <EntityType Name="PlanComptable">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+            <PropertyRef Name="NumeroCompte" />
+          </Key>
+          <Property Name="CodeSociete" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NumeroCompte" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Libelle" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="TypeCompte" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RubriqueBilan">
+          <Key>
+            <PropertyRef Name="CodeRubrique" />
+          </Key>
+          <Property Name="CodeRubrique" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="CodeRubriqueParent" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="Libelle" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Nature" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Signe" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Justification" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParametrageBilan" Relationship="I2S_Compta2Model.FK_ParametrageBilan_RubriqueBilan" FromRole="RubriqueBilan" ToRole="ParametrageBilan" />
+        </EntityType>
+        <EntityType Name="RubriqueEtatResultat">
+          <Key>
+            <PropertyRef Name="CodeRubrique" />
+          </Key>
+          <Property Name="CodeRubrique" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="CodeRubriqueParent" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="Libelle" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Nature" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Signe" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Justification" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Societe">
+          <Key>
+            <PropertyRef Name="CodeSociete" />
+          </Key>
+          <Property Name="CodeSociete" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CodeClient" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="RaisonSociete" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="CapitalSociete" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+          <Property Name="Adresse" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Tel1" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Tel2" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="MatriculeFiscale" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Observation" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Journals" Relationship="I2S_Compta2Model.FK_Journal_Societe" FromRole="Societe" ToRole="Journal" />
+        </EntityType>
+        <EntityType Name="Utilisateur">
+          <Key>
+            <PropertyRef Name="NomUtilisateur" />
+          </Key>
+          <Property Name="NomUtilisateur" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CodeClient" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="NomPrenom" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="MotPasse" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_ParametrageBilan_RubriqueBilan">
+          <End Type="I2S_Compta2Model.RubriqueBilan" Role="RubriqueBilan" Multiplicity="1" />
+          <End Type="I2S_Compta2Model.ParametrageBilan" Role="ParametrageBilan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RubriqueBilan">
+              <PropertyRef Name="CodeRubrique" />
+            </Principal>
+            <Dependent Role="ParametrageBilan">
+              <PropertyRef Name="CodeRubrique" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exercice_Exercice">
+          <End Type="I2S_Compta2Model.Exercice" Role="Exercice" Multiplicity="1" />
+          <End Type="I2S_Compta2Model.Exercice" Role="Exercice1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Exercice">
+              <PropertyRef Name="CodeSociete" />
+              <PropertyRef Name="CodeExercice" />
+            </Principal>
+            <Dependent Role="Exercice1">
+              <PropertyRef Name="CodeSociete" />
+              <PropertyRef Name="CodeExercice" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Journal_Societe">
+          <End Type="I2S_Compta2Model.Societe" Role="Societe" Multiplicity="1" />
+          <End Type="I2S_Compta2Model.Journal" Role="Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Societe">
+              <PropertyRef Name="CodeSociete" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="CodeSociete" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LignePieceComptable_PieceComptable">
+          <End Type="I2S_Compta2Model.PieceComptable" Role="PieceComptable" Multiplicity="1" />
+          <End Type="I2S_Compta2Model.LignePieceComptable" Role="LignePieceComptable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PieceComptable">
+              <PropertyRef Name="CodeSociete" />
+              <PropertyRef Name="CodePiece" />
+              <PropertyRef Name="CodeJournal" />
+              <PropertyRef Name="CodeExercice" />
+            </Principal>
+            <Dependent Role="LignePieceComptable">
+              <PropertyRef Name="CodeSociete" />
+              <PropertyRef Name="CodePiece" />
+              <PropertyRef Name="CodeJournal" />
+              <PropertyRef Name="CodeExercice" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="I2S_Compta2ModelStoreContainer" CdmEntityContainer="I2S_Compta2Entities">
+    <EntitySetMapping Name="Client">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.Client)">
+        <MappingFragment StoreEntitySet="Client">
+          <ScalarProperty Name="CodeClient" ColumnName="CodeClient" />
+          <ScalarProperty Name="RaisonSociale" ColumnName="RaisonSociale" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Adresse" ColumnName="Adresse" />
+          <ScalarProperty Name="Tel1" ColumnName="Tel1" />
+          <ScalarProperty Name="Tel2" ColumnName="Tel2" />
+          <ScalarProperty Name="MatriculeFiscale" ColumnName="MatriculeFiscale" />
+          <ScalarProperty Name="NbSociete" ColumnName="NbSociete" />
+          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+          <ScalarProperty Name="Observation" ColumnName="Observation" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Exercice">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.Exercice)">
+        <MappingFragment StoreEntitySet="Exercice">
+          <ScalarProperty Name="CodeSociete" ColumnName="CodeSociete" />
+          <ScalarProperty Name="CodeExercice" ColumnName="CodeExercice" />
+          <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
+          <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+          <ScalarProperty Name="Cloturer" ColumnName="Cloturer" />
+          <ScalarProperty Name="TypeSaisie" ColumnName="TypeSaisie" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Journal">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.Journal)">
+        <MappingFragment StoreEntitySet="Journal">
+          <ScalarProperty Name="CodeSociete" ColumnName="CodeSociete" />
+          <ScalarProperty Name="CodeJournal" ColumnName="CodeJournal" />
+          <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+          <ScalarProperty Name="AutoriserControle" ColumnName="AutoriserControle" />
+          <ScalarProperty Name="NumeroCompte" ColumnName="NumeroCompte" />
+          <ScalarProperty Name="Tresorerie" ColumnName="Tresorerie" />
+          <ScalarProperty Name="Ouverture" ColumnName="Ouverture" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LignePieceComptable">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.LignePieceComptable)">
+        <MappingFragment StoreEntitySet="LignePieceComptable">
+          <ScalarProperty Name="CodeSociete" ColumnName="CodeSociete" />
+          <ScalarProperty Name="CodePiece" ColumnName="CodePiece" />
+          <ScalarProperty Name="CodeJournal" ColumnName="CodeJournal" />
+          <ScalarProperty Name="CodeExercice" ColumnName="CodeExercice" />
+          <ScalarProperty Name="NumeroCompte" ColumnName="NumeroCompte" />
+          <ScalarProperty Name="NumeroOrdre" ColumnName="NumeroOrdre" />
+          <ScalarProperty Name="Debit" ColumnName="Debit" />
+          <ScalarProperty Name="Credit" ColumnName="Credit" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="DateReference" ColumnName="DateReference" />
+          <ScalarProperty Name="NumeroLettrage" ColumnName="NumeroLettrage" />
+          <ScalarProperty Name="NumeroRapprochement" ColumnName="NumeroRapprochement" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ParametrageBilan">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.ParametrageBilan)">
+        <MappingFragment StoreEntitySet="ParametrageBilan">
+          <ScalarProperty Name="CodeRubrique" ColumnName="CodeRubrique" />
+          <ScalarProperty Name="NumeroCompte" ColumnName="NumeroCompte" />
+          <ScalarProperty Name="Sens" ColumnName="Sens" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ParametrageEtatResultat">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.ParametrageEtatResultat)">
+        <MappingFragment StoreEntitySet="ParametrageEtatResultat">
+          <ScalarProperty Name="CodeRubrique" ColumnName="CodeRubrique" />
+          <ScalarProperty Name="NumeroCompte" ColumnName="NumeroCompte" />
+          <ScalarProperty Name="Sens" ColumnName="Sens" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PieceComptable">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.PieceComptable)">
+        <MappingFragment StoreEntitySet="PieceComptable">
+          <ScalarProperty Name="CodeSociete" ColumnName="CodeSociete" />
+          <ScalarProperty Name="CodePiece" ColumnName="CodePiece" />
+          <ScalarProperty Name="CodeJournal" ColumnName="CodeJournal" />
+          <ScalarProperty Name="CodeExercice" ColumnName="CodeExercice" />
+          <ScalarProperty Name="DateEcriture" ColumnName="DateEcriture" />
+          <ScalarProperty Name="TotalPiece" ColumnName="TotalPiece" />
+          <ScalarProperty Name="LibelleEcriture" ColumnName="LibelleEcriture" />
+          <ScalarProperty Name="NomUtilisateur" ColumnName="NomUtilisateur" />
+          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+          <ScalarProperty Name="HeureCreation" ColumnName="HeureCreation" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PlanComptable">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.PlanComptable)">
+        <MappingFragment StoreEntitySet="PlanComptable">
+          <ScalarProperty Name="CodeSociete" ColumnName="CodeSociete" />
+          <ScalarProperty Name="NumeroCompte" ColumnName="NumeroCompte" />
+          <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+          <ScalarProperty Name="TypeCompte" ColumnName="TypeCompte" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RubriqueBilan">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.RubriqueBilan)">
+        <MappingFragment StoreEntitySet="RubriqueBilan">
+          <ScalarProperty Name="CodeRubrique" ColumnName="CodeRubrique" />
+          <ScalarProperty Name="CodeRubriqueParent" ColumnName="CodeRubriqueParent" />
+          <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+          <ScalarProperty Name="Nature" ColumnName="Nature" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Signe" ColumnName="Signe" />
+          <ScalarProperty Name="Justification" ColumnName="Justification" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RubriqueEtatResultat">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.RubriqueEtatResultat)">
+        <MappingFragment StoreEntitySet="RubriqueEtatResultat">
+          <ScalarProperty Name="CodeRubrique" ColumnName="CodeRubrique" />
+          <ScalarProperty Name="CodeRubriqueParent" ColumnName="CodeRubriqueParent" />
+          <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+          <ScalarProperty Name="Nature" ColumnName="Nature" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Signe" ColumnName="Signe" />
+          <ScalarProperty Name="Justification" ColumnName="Justification" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Societe">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.Societe)">
+        <MappingFragment StoreEntitySet="Societe">
+          <ScalarProperty Name="CodeSociete" ColumnName="CodeSociete" />
+          <ScalarProperty Name="CodeClient" ColumnName="CodeClient" />
+          <ScalarProperty Name="RaisonSociete" ColumnName="RaisonSociete" />
+          <ScalarProperty Name="CapitalSociete" ColumnName="CapitalSociete" />
+          <ScalarProperty Name="Adresse" ColumnName="Adresse" />
+          <ScalarProperty Name="Tel1" ColumnName="Tel1" />
+          <ScalarProperty Name="Tel2" ColumnName="Tel2" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="MatriculeFiscale" ColumnName="MatriculeFiscale" />
+          <ScalarProperty Name="Observation" ColumnName="Observation" />
+          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Utilisateur">
+      <EntityTypeMapping TypeName="IsTypeOf(I2S_Compta2Model.Utilisateur)">
+        <MappingFragment StoreEntitySet="Utilisateur">
+          <ScalarProperty Name="NomUtilisateur" ColumnName="NomUtilisateur" />
+          <ScalarProperty Name="CodeClient" ColumnName="CodeClient" />
+          <ScalarProperty Name="NomPrenom" ColumnName="NomPrenom" />
+          <ScalarProperty Name="MotPasse" ColumnName="MotPasse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

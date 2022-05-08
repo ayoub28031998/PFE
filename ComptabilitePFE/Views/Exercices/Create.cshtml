@@ -1,0 +1,176 @@
+﻿@model ComptabilitePFE.Exercice
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<form action="@Url.Action("create")" method="post" id="addExerciceForm" novalidate="novalidate">
+    @Html.AntiForgeryToken()
+    <br>
+    <div class="card card-success cardWidth mx-auto">
+        <div class="card-header">
+            <h3 class="card-title"><b>AJouter exercice</b></h3>
+            <a href="@Url.Action("index")" class="btn btn-tool mt-0" style="float:right"><i class="fas fa-times"></i></a>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-md-7">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label" for="CodeExercice">Code exercice</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control text-box single-line" data-val="true" data-val-length="Name length can't be more than 4." maxlength="4" data-val-length-max="4" data-val-required="Ce champ est obligatoire" id="CodeExercice" name="CodeExercice" type="text" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="CodeExercice" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label" for="DateDebut">DateDebut</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field DateDebut must be a date." data-val-required="Ce champ est obligatoire" id="DateDebut" name="DateDebut" type="date" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="DateDebut" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label" for="DateFin">DateFin</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field DateFin must be a date." data-val-required="Ce champ est obligatoire" id="DateFin" name="DateFin" type="date" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="DateFin" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+                &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;
+                <div class="col-md-4">
+                    <label class="control-label" for="TypeSaisie">TypeSaisie</label>
+                    <hr />
+                    <div class="col-md-10">
+                        <div>
+                            <label class="btn active">
+                                <input checked="checked" id="TypeSaisie" name="TypeSaisie" type="radio" value="m"> Mensuel
+                            </label>
+
+                            <label class="btn">
+                                <input id="TypeSaisie" name="TypeSaisie" type="radio" value="J">Journaliere
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" id="submitButton" value="Create" class="btn btn-outline-success">
+
+            </div>
+        </div>
+
+
+
+    </div>
+</form>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/FrontEND/plugins/sweetalert2/sweetalert2.all.js"></script>
+
+    <script>
+        $(document).on('click', '#submitButton', function () {
+            if (validateForm()) {
+                var postForm = $('#addExerciceForm').serializeArray();
+                $.ajax({
+                    url: '@Url.Action("create")',
+                    type: 'post',
+                    data: postForm,
+                    success: function (result) {
+                        if (result == 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Succés',
+                                text: 'Exercice ajouté avec succés!'
+                            }).then(() => location.href = '@Url.Action("index")');
+                        }
+                        else {
+                            if (result == 'exists') {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Erreur',
+                                    text: 'Un exercice avec le même code existe déja!'
+                                });
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erreur',
+                                    text: 'Une erreur s\'est produite, contactez l\'administrateur!'
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        function validateForm() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            if ($('#CodeExercice').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Code exercice obligatoire!'
+                });
+                return false;
+            }
+
+            if ($('#DateDebut').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Date début obligatoire!'
+                });
+                return false;
+            }
+
+            if ($('#DateFin').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Date fin obligatoire!'
+                });
+                return false;
+            }
+
+            var dateDebut = new Date($('#DateDebut').val());
+            var dateFin = new Date($('#DateFin').val());
+            if (dateDebut > dateFin) {
+                Toast.fire({
+                    icon: 'info',
+                    title: 'Date fin ne peut pas être inférieure à la date début!'
+                });
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+}

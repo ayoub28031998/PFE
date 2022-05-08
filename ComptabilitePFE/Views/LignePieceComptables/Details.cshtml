@@ -1,0 +1,74 @@
+﻿@model ComptabilitePFE.LignePieceComptable
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>LignePieceComptable</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Debit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Debit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Credit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Credit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reference)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Reference)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateReference)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateReference)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumeroLettrage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumeroLettrage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumeroRapprochement)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumeroRapprochement)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PieceComptable.LibelleEcriture)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PieceComptable.LibelleEcriture)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

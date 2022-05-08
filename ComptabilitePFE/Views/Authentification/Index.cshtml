@@ -1,0 +1,398 @@
+﻿@model ComptabilitePFE.Utilisateur
+
+@{
+    ViewBag.Title = "Authentification";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-body">
+
+    <!-- Section: Design Block -->
+    <section class="">
+        <!-- Jumbotron -->
+        <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+            <div class="container">
+                <div class="row gx-lg-5 align-items-center">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <h1 class="my-5 display-3 fw-bold ls-tight">
+                            The best offer <br />
+                            <span class="text-danger">for your business</span>
+                        </h1>
+                        <p style="color: hsl(217, 10%, 50.8%)">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Eveniet, itaque accusantium odio, soluta, corrupti aliquam
+                            quibusdam tempora at cupiditate quis eum maiores libero
+                            veritatis? Dicta facilis sint aliquid ipsum atque?
+                        </p>
+                    </div>
+
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <div class="card mt-5">
+                            <div class="card-header border-0">
+                                <center><h1>Authentification</h1></center>
+                                <div class="card-title text-center">
+                                    <div><img src="~/FrontEND/dist/img/brandlogo.jpg" alt="branding logo" style="width:30%"></div>
+                                    <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
+                                        <span>Comptability STUBSOFT</span>
+                                    </h6>
+                                </div>
+
+                            </div>
+
+                            <div class="card-body">
+                                <form id="authenticationForm" class="form-horizontal" method="post" role="form">
+                                    @Html.AntiForgeryToken()
+                                    <h4>Nom d'utilisateur </h4>
+                                    <fieldset class="form-group position-relative has-icon-left mb-0">
+                                        <input class="form-control text-box single-line" id="NomUtilisateur" name="NomUtilisateur" type="text" value="">
+                                        <span class="field-validation-valid text-danger" data-valmsg-for="NomUtilisateur" data-valmsg-replace="true"></span>
+                                        <div class="form-control-position">
+                                            <i class="la la-user"></i>
+                                        </div>
+
+                                    </fieldset>
+                                    <h4>Mot de Passe </h4>
+                                    <fieldset class="form-group position-relative has-icon-left">
+                                        <input class="form-control" id="MotPasse" name="MotPasse" type="password">
+                                        <span class="field-validation-valid text-danger" data-valmsg-for="MotPasse" data-valmsg-replace="true"></span>
+                                        <div class="form-control-position">
+                                            <i class="la la-key"></i>
+                                        </div>
+                                    </fieldset>
+                                    <button type="button" id="submitButton" class="btn btn-info btn-block"><i class="ft-unlock"></i> Login</button>
+                                    <center><a href="@Url.Action("register")" class="nav-link">Créer un nouveau compte </a></center>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Jumbotron -->
+    </section>
+    <!-- Section: Design Block -->
+
+</div>
+<!-- /.login-card-body -->
+
+@section Scripts{
+    <script src="~/FrontEND/plugins/sweetalert2/sweetalert2.all.js"></script>
+    <script>
+
+        $(document).on('click', '#submitButton', function () {
+            if (validateForm()) {
+                var postForm = $('#authenticationForm').serializeArray();
+
+                $.ajax({
+                    url: '@Url.Action("index")',
+                    type: 'post',
+                    data: postForm,
+                    success: function (result) {
+                        if (result == "success") {
+                            $('#authenticationForm').load('@Url.Action("SelectSocieteEtExercice")');
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erreur',
+                                text: 'Mot de passe et/ou nom d\'utilisateur erroné!'
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+        function validateForm() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            if ($('#NomUtilisateur').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'NomUtilisateur obligatoires!'
+                });
+                return false;
+            }
+
+            if ($('#MotPasse').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'MotPasse obligatoires!'
+                });
+                return false;
+            }
+            return true;
+        }
+
+        $(document).on('change', '#societesSelect', function () {
+            var value = $(this).val();
+            if (value == '-- Societe --') {
+                $('#ExerciceSelect').find('option').remove();
+                $('#ExerciceSelect').prop('disabled', true);
+                $('#addExerciceButton').prop('disabled', true);
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("getexercicesbysociete")',
+                    type: 'get',
+                    data: {
+                        codeSociete: value
+                    },
+                    success: function (result) {
+                        if (result.length > 0) {
+                            $('#ExerciceSelect').find('option').remove();
+                            result.forEach(item => {
+                                $('#ExerciceSelect').append($('<option>', { value: item, text: item }));
+                            });
+                            $('#addExerciceButton').prop('disabled', false);
+                            $('#ExerciceSelect').prop('disabled', false);
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Attention',
+                                text: 'Cette société ne posséde aucun exercice, vous pouvez en ajouter en cliquant sur le bouton "Ajouter Exercice"!'
+                            });
+                            $('#ExerciceSelect').find('option').remove();
+                            $('#addExerciceButton').prop('disabled', false);
+                            $('#ExerciceSelect').prop('disabled', true);
+                        }
+                    }
+                });
+            }
+        });
+
+        function addSocieteButtonClicked() {
+            Swal.fire({
+                title: 'Ajouter société',
+                html: `<div class="rendered-form">
+                        <div class="formbuilder-text form-group">
+                            <label for="CodeSociete" class="formbuilder-text-label">CodeSociete</label>
+                            <input type="text" class="form-control" name="CodeSociete" access="false" id="CodeSociete">
+                        </div>
+                        <div class="formbuilder-text form-group field-RaisonSociete">
+                            <label for="RaisonSociete" class="formbuilder-text-label">RaisonSociete</label>
+                            <input type="text" class="form-control" name="RaisonSociete" access="false" id="RaisonSociete">
+                        </div>
+                        <div class="formbuilder-number form-group field-CapitalSociete">
+                            <label for="CapitalSociete" class="formbuilder-number-label">CapitalSociete</label>
+                            <input type="number" class="form-control" name="CapitalSociete" access="false" id="CapitalSociete">
+                        </div>
+                        <div class="formbuilder-text form-group field-Adresse">
+                            <label for="Adresse" class="formbuilder-text-label">Adresse</label>
+                            <input type="text" class="form-control" name="Adresse" access="false" id="Adresse">
+                        </div>
+                        <div class="formbuilder-text form-group field-Tel1">
+                            <label for="Tel1" class="formbuilder-text-label">Tel1</label>
+                            <input type="text" class="form-control" name="Tel1" access="false" id="Tel1">
+                        </div>
+                        <div class="formbuilder-text form-group field-Tel2">
+                            <label for="Tel2" class="formbuilder-text-label">Tel2</label>
+                            <input type="text" class="form-control" name="Tel2" access="false" id="Tel2">
+                        </div>
+                        <div class="formbuilder-text form-group field-Email">
+                            <label for="Email" class="formbuilder-text-label">Email</label>
+                            <input type="text" class="form-control" name="Email" access="false" id="Email">
+                        </div>
+                        <div class="formbuilder-text form-group field-MatriculeFiscale">
+                            <label for="MatriculeFiscale" class="formbuilder-text-label">MatriculeFiscale</label>
+                            <input type="text" class="form-control" name="MatriculeFiscale" access="false" id="MatriculeFiscale">
+                        </div>
+                        <div class="formbuilder-text form-group field-Observation">
+                            <label for="Observation" class="formbuilder-text-label">Observation</label>
+                            <input type="text" class="form-control" name="Observation" access="false" id="Observation">
+                        </div>
+                        <div class="formbuilder-date form-group field-DateCreation">
+                            <label for="DateCreation" class="formbuilder-date-label">DateCreation</label>
+                            <input type="date" class="form-control" name="DateCreation" access="false" id="DateCreation">
+                        </div>
+                    </div>`,
+                preConfirm: function () {
+                    return new Promise(function (resolve) {
+                        resolve([
+                            $('#CodeSociete').val(),
+                            $('#RaisonSociete').val(),
+                            $('#CapitalSociete').val(),
+                            $('#Adresse').val(),
+                            $('#Tel1').val(),
+                            $('#Tel2').val(),
+                            $('#Email').val(),
+                            $('#MatriculeFiscale').val(),
+                            $('#Observation').val(),
+                            $('#DateCreation').val()
+                        ])
+                    })
+                },
+
+            }).then((result) => {
+                var societe = [];
+                societe.push({ name: 'CodeSociete', value:result.value[0]});
+                societe.push({ name: 'RaisonSociete', value:result.value[1]});
+                societe.push({ name: 'CapitalSociete', value:result.value[2]});
+                societe.push({ name: 'Adresse', value:result.value[3]});
+                societe.push({ name: 'Tel1', value:result.value[4]});
+                societe.push({ name: 'Tel2', value:result.value[5]});
+                societe.push({ name: 'Email', value:result.value[6]});
+                societe.push({ name: 'MatriculeFiscale', value:result.value[7]});
+                societe.push({ name: 'Observation', value:result.value[8]});
+                societe.push({ name: 'DateCreation', value: result.value[9] });
+                $.ajax({
+                    url: '@Url.Action("addsociete")',
+                    type: 'post',
+                    data: societe,
+                    success: function (result) {
+                        if (result == 'exists') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erreur',
+                                text: 'Une société avec le même code client et code société existe déja!'
+                            });
+                        }
+                        else {
+                            if (result == 'error') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erreur',
+                                    text: 'Une erreur s\'est produite, veuillez contact l\'administrateur!',
+                                });
+                            }
+                            else {
+                                $('#societesSelect').append($('<option>', { value: result.CodeSociete, text: result.RaisonSociete }));
+                                $('#societesSelect').val($('#societesSelect option:first').val());
+                                $('#addExerciceButton').prop('disabled', true);
+                                $('#ExerciceSelect').find('option').remove();
+                                $('#ExerciceSelect').prop('disabled', true);
+                            }
+                        }
+                    }
+                })
+            });
+        }
+
+        function addExerciceButtonClicked() {
+            Swal.fire({
+                title: 'Ajouter exercice',
+                html: `<div class="rendered-form">
+                        
+                        <div class="formbuilder-text form-group">
+                            <label for="CodeExercice" class="formbuilder-text-label">Code Exercice</label>
+                            <input type="text" class="form-control" maxlength="4" name="CodeExercice" id="CodeExercice">
+                        </div>
+
+                        <div class="formbuilder-number form-group">
+                            <label for="DateDebut" class="formbuilder-number-label">Date Debut</label>
+                            <input type="date" class="form-control" name="DateDebut" access="false" id="DateDebut">
+                        </div>
+
+                        <div class="formbuilder-text form-group">
+                            <label for="DateFin" class="formbuilder-text-label">DateFin</label>
+                            <input type="date" class="form-control" name="DateFin" id="DateFin">
+                        </div>
+
+                        <div class="formbuilder-text form-group">
+                            <label for="TypeSaisie" class="formbuilder-text-label">Type saisie</label>
+                         <div class="col-md-10">
+                        <div>
+                            <label class="btn active">
+                                <input checked="checked" id="TypeSaisie" name="TypeSaisie" type="radio" value="m"> Mensuel
+                            </label>
+                            <label class="btn">
+                                <input id="TypeSaisie" name="TypeSaisie" type="radio" value="J">Journaliere
+                            </label>
+                        </div>
+                    </div>
+                        </div>
+                    </div>`,
+                preConfirm: function () {
+                    return new Promise(function (resolve) {
+                        resolve([
+                            $('#CodeExercice').val(),
+                            $('#DateDebut').val(),
+                            $('#DateFin').val(),
+                            $('#Cloturer').prop('checked'),
+                            $('#TypeSaisie').val()
+                        ]);
+                    });
+                },
+
+            }).then((result) => {
+                var exercice = [];
+                exercice.push({ name: 'CodeExercice', value:result.value[0]});
+                exercice.push({ name: 'DateDebut', value:result.value[1]});
+                exercice.push({ name: 'DateFin', value:result.value[2]});
+                exercice.push({ name: 'Cloturer', value:result.value[3]});
+                exercice.push({ name: 'TypeSaisie', value: result.value[4] });
+                exercice.push({ name: 'CodeSociete', value: $('#societesSelect').val() });
+                $.ajax({
+                    url: '@Url.Action("addexercice")',
+                    type: 'post',
+                    data: exercice,
+                    success: function (result) {
+                        if (result == 'exists') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erreur',
+                                text: 'Le même code exercice dans cette société existe déja!'
+                            });
+                        }
+                        else {
+                            if (result == 'error') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erreur',
+                                    text: 'Une erreur s\'est produite, veuillez contact l\'administrateur!',
+                                });
+                            }
+                            else {
+                                $('#ExerciceSelect').append($('<option>', { value: result.CodeExercice, text: result.CodeExercice }));
+                                $('#ExerciceSelect').prop('disabled', false);
+                            }
+                        }
+                    }
+                })
+            });
+        }
+
+        function continueButtonClicked() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            if ($('#ExerciceSelect').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Exercice obligatoire!'
+                });
+                return;
+            }
+
+            if ($('#societesSelect').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Société obligatoire!'
+                });
+                return;
+            }
+
+            location.href = '@Url.Action("authenticateuser")?codeExercice=' + $('#ExerciceSelect').val() + '&codeSociete=' + $('#societesSelect').val();
+        }
+
+    </script>
+}

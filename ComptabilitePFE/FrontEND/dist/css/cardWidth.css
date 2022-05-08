@@ -1,0 +1,19 @@
+﻿body {
+}
+.cardWidth {
+    width: 60%;
+}
+@media screen and (max-width: 1400px) {
+    .cardWidth {
+        width: 70%;
+    }
+}
+.alert-fixed {
+    position: fixed;
+    top: 100px;
+    width: 20%;
+    right: 20px;
+    z-index: 9999;
+    border-radius: 0px
+}
+

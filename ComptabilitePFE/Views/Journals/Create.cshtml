@@ -1,0 +1,210 @@
+﻿@model List<ComptabilitePFE.PlanComptable>
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<form id="createJournalForm">
+    @Html.AntiForgeryToken()
+    <br />
+
+    <div class="card card-success mx-auto" style="width:60%">
+        <div class="card-header">
+            <h3 class="card-title"><b>Journal/Create</b></h3>
+            <a href="@Url.Action("Index","Journals")" class="btn btn-tool mt-0" style="float:right"><i class="fas fa-times"></i></a>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+
+        <div class="card-body">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label col-md-12" for="CodeJournal">CodeJournal</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control text-box single-line valid" data-val="true" data-val-length="5 caractéres" data-val-length-max="5" id="CodeJournal" name="CodeJournal" maxlength="5" type="text" value="" aria-describedby="CodeJournal-error" aria-invalid="false">
+                            <span class="text-danger field-validation-valid" data-valmsg-for="CodeJournal" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label col-md-12" for="Libelle">Libelle</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control text-box single-line valid" data-val="true" data-val-length="150 caractéres" maxlength="150" id="Libelle" name="Libelle" type="text" value="" aria-describedby="Libelle-error" aria-invalid="false">
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Libelle" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    &nbsp;
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="checkbox">
+                                <input class="check-box valid" data-val="true" data-val-required="The Ouverture field is required." id="Ouverture" name="Ouverture" type="checkbox" value="true" aria-describedby="Ouverture-error"><input name="Ouverture" type="hidden" value="false">
+                                <span class="text-danger field-validation-valid" data-valmsg-for="Ouverture" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <label class="control-label col-md-12" for="Ouverture">Ouverture</label>
+                        </div>
+                    </div>
+
+                   <br />
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="checkbox">
+                                <input class="check-box valid" data-val="true" data-val-required="The Tresorerie field is required." id="Tresorerie" name="Tresorerie" type="checkbox" value="true" aria-describedby="Tresorerie-error"><input name="Tresorerie" type="hidden" value="false">
+                                <span class="text-danger field-validation-valid" data-valmsg-for="Tresorerie" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <label class="control-label col-md-12" for="Tresorerie">Tresorerie</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="col-md-10">
+                        <div class="row">
+
+                            <div class="col-md-2">
+                                <div class="checkbox">
+
+                                    <span class="text-danger field-validation-valid" data-valmsg-for="AutoriserControle" data-valmsg-replace="true"></span>
+                                    <input class="check-box valid" data-val="true" data-val-required="The AutoriserControle field is required." id="AutoriserControle" name="AutoriserControle" type="checkbox" aria-describedby="AutoriserControle-error">
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <label class="control-label col-md-12" for="AutoriserControle">AutoriserControle</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col">
+                            <b>Numero du compte</b>
+                        </div>
+                        <div class="form-group">
+
+                            <select class="form-control valid" data-val="true" data-val-required="Ce champe est obligatoire" id="NumeroCompte" name="NumeroCompte" aria-describedby="NumeroCompte-error" aria-invalid="false" disabled>
+                                @foreach (var pc in Model)
+                                {
+                                    <option value="@pc.NumeroCompte">@pc.NumeroCompte - @pc.Libelle (@pc.TypeCompte)</option>
+                                }
+                            </select>
+
+                            <span class="text-danger field-validation-valid" data-valmsg-for="NumeroCompte" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" id="submitButton" value="Create" class="btn btn-outline-success" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/FrontEND/plugins/sweetalert2/sweetalert2.all.js"></script>
+    <script>
+        $(document).on('click', '#submitButton', function () {
+            if (validateForm()) {
+                var formElements = $('#createJournalForm').serializeArray();
+
+                formElements.find((object, index) => {
+                    if (object.name == 'AutoriserControle') {
+                        formElements[index].value = true;
+                    }
+                });
+
+                $.ajax({
+                    url: '@Url.Action("create","journals")',
+                    type: 'post',
+                    data: formElements,
+                    success: function (result) {
+                        if (result == 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Succés',
+                                text: 'Journal ajouté avec succés!'
+                            }).then(() => location.href = '@Url.Action("index")');
+                        }
+                        else {
+                            if (result == 'exists') {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Erreur',
+                                    text: 'Un journal avec le même code existe déja!'
+                                });
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erreur',
+                                    text: 'Une erreur s\'est produite, contactez l\'administrateur!'
+                                });
+                            }
+                        }
+                    }
+                })
+            }
+        });
+
+        $(document).on('change', '#AutoriserControle', function () {
+            if ($(this).prop('checked')) {
+                $('#NumeroCompte').prop('disabled', false);
+            }
+            else {
+                $('#NumeroCompte').prop('disabled', true);
+            }
+        });
+
+        function validateForm() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            if ($('#CodeJournal').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Code journal obligatoire!'
+                });
+                return false;
+            }
+            
+            if ($('#Libelle').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Libelle obligatoire!'
+                });
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+}

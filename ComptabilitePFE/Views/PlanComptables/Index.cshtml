@@ -1,0 +1,112 @@
+﻿@model IEnumerable<ComptabilitePFE.PlanComptable>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <b>Plan Comptable</b>
+        </h3>
+        <button" class="btn btn-outline-success float-right" value="Create New" onclick="location.href='@Url.Action("Create", "PlanComptables")'"><i class='fa fa-plus'></i></button">
+
+    </div>
+
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped table-hover table-head-fixed text-nowrap dtr-inline">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NumeroCompte)
+                    </th>
+                    <th>
+                        Désignation du compte
+                    </th>
+
+                    <th>
+                        <center>
+                            Parametres
+                        </center>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="@item.NumeroCompte">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumeroCompte)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Libelle)
+                        </td>
+
+                        <td>
+                            <center>
+
+                                <button" class="btn btn-outline-warning btn-sm" value="Edit" onclick="location.href='@Url.Action("Edit", "PlanComptables",  new {id = item.NumeroCompte , cs = item.CodeSociete })'"><i class='fa fa-pen-square'></i></button">
+
+                                <button" class="btn btn-outline-info btn-sm" value="Details" onclick="location.href='@Url.Action("Details", "PlanComptables",  new { id = item.NumeroCompte , cs = item.CodeSociete })'"><i class='fa fa-info-circle'></i></button">
+
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteButtonClicked('@item.NumeroCompte','@item.CodeSociete')">
+                                    <i class='fa fa-trash'></i>
+                                </button>
+                            </center>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/FrontEND/plugins/sweetalert2/sweetalert2.all.js"></script>
+
+    <script>
+        function deleteButtonClicked(numeroCompte, codeSociete) {
+            Swal.fire({
+                title: 'Vérification?',
+                text: "Voulez vous vraiment supprimer ce plan comptable?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Annuler',
+                confirmButtonText: 'Oui'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '@Url.Action("delete","plancomptables")',
+                        type: 'post',
+                        data: {
+                            numeroCompte,
+                            codeSociete
+                        },
+                        success: function (result) {
+                            if (result == 'success') {
+
+                                Swal.fire(
+                                    'Succés!',
+                                    'Plan comptable supprimé avec succés.',
+                                    'success'
+                                ).then(() => $(document.getElementById(numeroCompte)).remove());
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erreur',
+                                    text: 'Une erreur s\'est produite, contactez l\'administrateur!'
+                                });
+                            }
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+}

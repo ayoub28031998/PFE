@@ -1,0 +1,414 @@
+﻿@model List<ComptabilitePFE.Journal>
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm())
+{
+    <br />
+    <div class="card card-success  mx-auto " style="width:100%">
+
+        <div class="card-header">
+            <div class="row">
+                <h1 class="card-title">Piece comptable/Create</h1>
+                <a href="@Url.Action("Index","pieceComptables")" class="btn btn-tool ml-auto"><i class="fas fa-times"></i></a>
+            </div>
+
+
+
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+
+        <div class="card-body">
+            <form>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="row">
+                    <div class="form-group  col-md-2">
+                        <label class="control-label " for="pieceComptable_CodePiece">CodePiece</label>
+                        <div>
+                            <input class="form-control CodePiece text-box single-line" id="pieceComptable_CodePiece" name="pieceComptable.CodePiece" type="text" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="pieceComptable.CodePiece" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    @*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*@
+                    <div class="form-group col-md-9">
+                        <label class="control-label" for="pieceComptable_LibelleEcriture">LibelleEcriture</label>
+                        <div>
+                            <input class="form-control LibelleEcriture text-box single-line" id="pieceComptable_LibelleEcriture" name="pieceComptable.LibelleEcriture" type="text" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="pieceComptable.LibelleEcriture" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label" for="pieceComptable_CodeJournal">CodeJournal</label>
+                        <div class="col-md-10">
+
+                            <select class="form-control CodeJournal" id="pieceComptable_CodeJournal" name="pieceComptable.CodeJournal">
+                                @foreach (var journal in Model)
+                                {
+                                    <option value="@journal.CodeJournal">@journal.Libelle</option>
+                                }
+                            </select>
+
+                            <span class="field-validation-valid text-danger" data-valmsg-for="pieceComptable.CodeJournal" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+
+
+                   
+                    <div class="form-group  col-md-4 ">
+                        <label class="control-label" for="pieceComptable_DateEcriture">DateEcriture</label>
+                        <div class="col-md-10">
+                            <input class="form-control DateEcriture text-box single-line" data-val="true" data-val-date="The field DateEcriture must be a date." data-val-required="The DateEcriture field is required." id="pieceComptable_DateEcriture" name="pieceComptable.DateEcriture" type="date" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="pieceComptable.DateEcriture" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <hr />
+                    <button id="addRow" type="button" class="btn btn-outline-info btn-sm"><i class='fa fa-plus'></i> Ajouter ligne piéce</button>
+                    <div class="input-group mb-3 ">
+                        <input disabled value="N-Compte" type="text" class="form-control m-input " style="width: 12%">
+                        <input disabled value="N-Ordre" type="text" class="form-control m-input " style="width: 12%">
+                        <input disabled value="Debit" type="text" class="form-control m-input " style="width: 12%">
+                        <input disabled value="Credit" type="text" class="form-control m-input " style="width: 12%">
+                        <input disabled value="Reference" type="text" class="form-control m-input " style="width: 12%">
+                        <input disabled value="N-Lettrage" type="text" class="form-control m-input " style="width: 12%">
+                        <input disabled value="N-Rapprochement" type="text" class="form-control m-input " style="width: 12%">
+                        <div class="input-group-append">
+                            <button disabled type="button" class="btn btn-outline-danger" style="margin-right: 5px"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <hr />
+
+
+                    <div id="inputFormRow" style="width: 35%">
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-append"></div>
+
+                        </div>
+                    </div>
+                    <div id="newRow">
+                    </div>
+                    <div id="lastRowDiv">
+
+                    </div>
+
+                </div>
+               
+</form>
+        </div>
+
+        <div class="card-footer">
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" id="createButton" class="btn btn-outline-success">Create</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+
+@section Scripts
+{
+    <script src="~/FrontEND/plugins/sweetalert2/sweetalert2.all.js"></script>
+    <script>
+
+        $("#addRow").click(function () {
+
+            var rowCount = parseInt($("#totalLans").val());
+            rowCount++;
+            $("#totalLans").val(rowCount);
+            var html = '';
+            html += '<div id="inputFormRow" >';
+            html += '<div class="input-group mb-3 ligneElement">';
+
+
+
+            html += '<input type="text" name="NumeroCompte" class="form-control m-input NumeroCompte" placeholder="N-Compte" autocomplete="off" style="width: 12%" required>';
+            html += '<input type="number" name="NumeroOrdre" class="form-control m-input NumeroOrdre" placeholder="N-Ordre" autocomplete="off" style="width: 12%" required>';
+            html += '<input type="number" name="Debit" class="form-control m-input Debit" placeholder="Debit" autocomplete="off" style="width: 12%" required>';
+            html += '<input type="number" name="Credit" class="form-control m-input Credit" placeholder="Credit" autocomplete="off" style="width: 12%" required>';
+            html += '<input type="text" name="Reference" class="form-control m-input Reference" placeholder="Reference" autocomplete="off" style="width: 12%" required>';
+            html += '<input type="text" name="NumeroLettrage" class="form-control m-input NumeroLettrage" placeholder="N-Lettrage" autocomplete="off" style="width: 12%" required>';
+            html += '<input type="text" name="NumeroRapprochement" class="form-control m-input NumeroRapprochement" placeholder="N-Rapprochement" autocomplete="off" style="width: 12%" required>';
+            html += '<div class="input-group-append">';
+            html += '<button id="removeRow" type="button" class="btn btn-outline-danger" style="margin-right: 5px"><i class="fa fa-trash"></i></button>';
+            html += '</div>';
+            html += '</div>';
+
+            $('#newRow').append(html);
+
+            if ($('#lastRowDiv').find("#lastRow").length == 0) {
+                var lastRow = '<div id="lastRow" ><div class="input-group mb-3"><input type="text" name="NumeroCompte" class="form-control m-input NumeroCompte" autocomplete="off" style="width: 12%" disabled><input type="text" n class="form-control m-input "value="Total :" autocomplete="off" style="width: 12%" disabled><input type="text" id="lastRowDebit" class="form-control m-input Debit" value="0.000" autocomplete="off" style="width: 12%" disabled><input type="text" id="lastRowCredit" class="form-control m-input Credit" value="0.000" autocomplete="off" style="width: 12%" disabled><input type="text" name="Reference" class="form-control m-input Reference" autocomplete="off" style="width: 12%" disabled><input type="text" name="NumeroLettrage" class="form-control m-input NumeroLettrage" autocomplete="off" style="width: 12%" disabled><input type="text" name="NumeroRapprochement" class="form-control m-input NumeroRapprochement" autocomplete="off" style="width: 12%" disabled><div class="input-group-append"><button disabled id="removeRow" type="button" class="btn btn-outline-danger" style="margin-right: 5px"><i class="fa fa-trash"></i></button></div></div>';
+                $('#lastRowDiv').append(lastRow);
+            }
+        });
+
+        $(document).on('click', '#removeRow', function () {
+            var parentDiv = $(this).parents('.input-group').parent();
+            var remainingDivs = $('#newRow').find('.input-group').length;
+            $(parentDiv).remove();
+            if (remainingDivs == 1) {
+                $("#lastRow").remove();
+            }
+
+            var credit = $(this).parents('.input-group').find('.Credit').val();
+            var debit = $(this).parents('.input-group').find('.Debit').val();
+
+            var lastRowCredit = parseFloat($('#lastRowCredit').val());
+            var lastRowDebit = parseFloat($('#lastRowDebit').val());
+
+            if (credit != '') {
+                var currentValue = parseFloat(credit);
+                $('#lastRowCredit').val(lastRowCredit - currentValue);
+            }
+            else {
+                if (debit != '') {
+                    var currentValue = parseFloat(debit);
+                    $('#lastRowDebit').val(lastRowDebit - currentValue);
+                }
+            }
+        });
+
+        $(document).on('change', '.Debit', function () {
+            var credit = $(this).parents('.input-group').find('.Credit');
+            if ($(this).val() == '') {
+                $(credit).prop('disabled', false);
+                var debitsSum = 0;
+                $('.ligneElement > .Debit').filter(function (index, element) { return $(element).val() != ''; }).each(function (index, element) {
+                    debitsSum += parseFloat($(element).val());
+                });
+                $('#lastRowDebit').val(debitsSum);
+            }
+            else {
+                $(credit).prop('disabled', true);
+                var debitsSum = 0;
+                $('.ligneElement > .Debit').filter(function (index, element) { return $(element).val() != ''; }).each(function (index, element) {
+                    debitsSum += parseFloat($(element).val());
+                });
+                $('#lastRowDebit').val(debitsSum);
+            }
+        });
+
+        $(document).on('change', '.Credit', function () {
+            var debit = $(this).parents('.input-group').find('.Debit');
+            if ($(this).val() == '') {
+                $(debit).prop('disabled', false);
+                var creditsSum = 0;
+                $('.ligneElement > .Credit').filter(function (index, element) { return $(element).val() != ''; }).each(function (index, element) {
+                    creditsSum += parseFloat($(element).val());
+                });
+                $('#lastRowCredit').val(creditsSum);
+            }
+            else {
+                $(debit).prop('disabled', true);
+                var creditsSum = 0;
+                $('.ligneElement > .Credit').filter(function (index, element) { return $(element).val() != ''; }).each(function (index, element) {
+                    creditsSum += parseFloat($(element).val());
+                });
+                $('#lastRowCredit').val(creditsSum);
+            }
+        });
+
+        $(document).on('click', '#createButton', function () {
+
+            if (validateForm()) {
+                var pieceComptableLigne = {};
+                var lignesPieceComptable = [];
+
+                pieceComptableLigne.CodePiece = $('#pieceComptable_CodePiece').val();
+                pieceComptableLigne.LibelleEcriture = $('#pieceComptable_LibelleEcriture').val();
+                pieceComptableLigne.CodeJournal = $('#pieceComptable_CodeJournal').val();
+                pieceComptableLigne.TotalPiece = $('#pieceComptable_TotalPiece').val();
+                pieceComptableLigne.DateEcriture = $('#pieceComptable_DateEcriture').val();
+
+
+                $('.ligneElement').each(function (index, element) {
+                    var lignePieceCompatable = {
+                        NumeroCompte: $(this).find('.NumeroCompte').val(),
+                        NumeroOrdre: $(this).find('.NumeroOrdre').val(),
+                        Debit: $(this).find('.Debit').val(),
+                        Credit: $(this).find('.Credit').val(),
+                        Reference: $(this).find('.Reference').val(),
+                        NumeroLettrage: $(this).find('.NumeroLettrage').val(),
+                        NumeroRapprochement: $(this).find('.NumeroRapprochement').val()
+                    };
+                    lignesPieceComptable.push(lignePieceCompatable);
+                });
+
+                var piece = pieceComptableLigne;
+                var lignes = lignesPieceComptable;
+
+                var lastRowCredit = parseFloat($('#lastRowCredit').val());
+                var lastRowDebit = parseFloat($('#lastRowDebit').val());
+
+                if (lastRowCredit != lastRowDebit) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erreur!',
+                        text: 'La somme des débits est différent de celle des crédits!'
+                    });
+                    return;
+                }
+
+                $.ajax({
+                    url: '/piececomptablelignes/create',
+                    type: 'post',
+                    data: {
+                        piece,
+                        lignes
+                    },
+                    success: function (result) {
+                        if (result == 'success') {
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Succés',
+                                text: 'Piéce ajoutée avec succés!'
+                            }).then(() => { location.href = '@Url.Action("index", "piececomptables")'; });
+                        }
+                        else {
+                            if (result == 'exists') {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Erreur',
+                                    text: 'Piéce avec le même code existe déja!'
+                                });
+                            }
+                            else {
+                                if (result == 'lineexists') {
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Erreur',
+                                        text: 'Lignes piéce ne sont pas uniques!!'
+                                    });
+                                }
+                                else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Erreur',
+                                        text: 'Une erreur s\'est produite, veuillez contact l\'administrateur!'
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+        });
+
+        function validateForm() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            if ($('#pieceComptable_CodePiece').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Code piéce obligatoire!'
+                });
+            }
+
+            if ($('#pieceComptable_LibelleEcriture').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Libellé écriture obligatoire!'
+                });
+            }
+
+            if ($('#pieceComptable_TotalPiece').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Total piéce obligatoire!'
+                });
+            }
+
+            if ($('#pieceComptable_DateEcriture').val() == '' )  {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Date écriture obligatoire!'
+                });
+            }
+
+
+            if (new Date($('#pieceComptable_DateEcriture').val()).getFullYear() != @Session["CodeExercice"]) {
+                Toast.fire({
+                   icon: 'error',
+                  title: 'Date écriture !'
+               });
+            }
+
+
+
+            var allNCompteSet = $('#newRow .NumeroCompte').length == 0 || $('#newRow .NumeroCompte').filter(function (index, element) { return $(element).val() == ''; }).length == 0;
+
+            if (!allNCompteSet) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Numéro compte obligatoire!'
+                });
+            }
+
+            var allNOrdreSet = $('#newRow .NumeroOrdre').length == 0 || $('#newRow .NumeroOrdre').filter(function (index, element) { return $(element).val() == ''; }).length == 0;
+
+            if (!allNOrdreSet) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Numéro ordre obligatoire!'
+                });
+            }
+
+            var allReferenceSet = $('#newRow .Reference').length == 0 || $('#newRow .Reference').filter(function (index, element) { return $(element).val() == ''; }).length == 0;
+
+            if (!allReferenceSet) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Réference obligatoire!'
+                });
+            }
+
+            var allNLettrageSet = $('#newRow .NumeroLettrage').length == 0 || $('#newRow .NumeroLettrage').filter(function (index, element) { return $(element).val() == ''; }).length == 0;
+
+            if (!allNLettrageSet) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Numéro lettrage obligatoire!'
+                });
+            }
+
+            var allNRapprochementSet = $('#newRow .NumeroRapprochement').length == 0 || $('#newRow .NumeroRapprochement').filter(function (index, element) { return $(element).val() == ''; }).length == 0;
+
+            if (!allNRapprochementSet) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Numéro rapprochement obligatoire!'
+                });
+            }
+
+            var allFieldsSet = $('#pieceComptable_CodePiece').val() != '' && $('#pieceComptable_LibelleEcriture').val() != '' && $('#pieceComptable_TotalPiece').val() != '' && $('#pieceComptable_DateEcriture').val() != '';
+
+            return allFieldsSet && allNRapprochementSet && allNLettrageSet && allReferenceSet && allNOrdreSet && allNCompteSet;
+        }
+
+    </script>
+}

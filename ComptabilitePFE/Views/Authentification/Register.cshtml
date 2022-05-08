@@ -1,0 +1,301 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registration Page</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+    <link href="~/FrontEND/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <link href="~/FrontEND/plugins/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/FrontEND/dist/css/adminlte.min.css" rel="stylesheet" />
+    <link href="~/FrontEND/plugins/sweetalert2/sweetalert2.css" rel="stylesheet" />
+</head>
+
+<body class="hold-transition register-page">
+    <div class="register-box">
+        <div class="register-logo">
+            <img src="~/FrontEND/dist/img/brandlogo.jpg" alt="branding logo" style="width:30%">
+        </div>
+        <div class="card">
+            <div class="card-body register-card-body">
+                <p class="login-box-msg">Inscription d'un nouvel utilisateur</p>
+                <form method="post" id="registerUserForm">
+
+                    @*CodeClient*@
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" maxlength="30" placeholder="Code Client" name="CodeClient" id="CodeClient">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-book"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*RaisonSociale*@
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" maxlength="300" placeholder="Raison Sociale" name="RaisonSociale" id="RaisonSociale">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-building"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Contact*@
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" maxlength="30" placeholder="Contact" name="Contact" id="Contact">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Email*@
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" maxlength="30" placeholder="Email" name="Email" id="Email">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*Adresse*@
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" maxlength="300" placeholder="Adresse" name="Adresse" id="Adresse">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-hotel"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*Tel1*@
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" maxlength="30" placeholder="Tel1" name="Tel1" id="Tel1">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-phone"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*Tel2*@
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" maxlength="30" placeholder="Tel2" name="Tel2" id="Tel2">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-phone"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*MatriculeFiscale*@
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" maxlength="30" placeholder="Matricule fiscale" name="MatriculeFiscale" id="MatriculeFiscale">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-hashtag"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*NbSociete*@
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" maxlength="30" placeholder="NbSociete" name="NbSociete" id="NbSociete">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-calculator"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*DateCreation*@
+                    <div class="input-group mb-3">
+                        <input type="date" class="form-control" placeholder="DateCreation" name="DateCreation" id="DateCreation">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-calendar"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*Observation*@
+                    <div class="input-group mb-3">
+                        <textarea class="form-control" maxlength="300" placeholder="Observation" name="Observation" id="Observation"></textarea>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-comment"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <button type="button" id="submitButton" class="btn btn-primary btn-block">S'inscrire</button>
+                        </div>
+                    </div>
+                </form>
+                <a href="@Url.Action("index")" class="text-center">Je suis déja inscrit</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/FrontEND/plugins/jquery/jquery.min.js"></script>
+    <script src="~/FrontEND/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/FrontEND/plugins/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/FrontEND/dist/js/adminlte.min.js"></script>
+    <script>
+        $(document).on('click', '#submitButton', function () {
+            if (validateForm()) {
+                var postForm = $('#registerUserForm').serializeArray();
+
+                $.ajax({
+                    url: '@Url.Action("registeruser")',
+                    type: 'post',
+                    data: postForm,
+                    success: function (result) {
+                        if (result == 'success') {
+
+                            Swal.fire(
+                                'Succés!',
+                                'Demande de création envoyée avec succés, vous serez contacter par le support client pour fournir votre nom d\'utilisateur et mot de passe',
+                                'success'
+                            ).then(() => location.href = '@Url.Action("index")');
+                        }
+                        else {
+                            if (result == 'exists') {
+
+                                Swal.fire(
+                                    'Erreur!',
+                                    'Un utilisateur avec le même code client existe déja!',
+                                    'info'
+                                );
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erreur',
+                                    text: 'Une erreur s\'est produite, contactez l\'administrateur!'
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        function validateForm() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            if ($('#CodeClient').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Code client obligatoires!'
+                });
+                return false;
+            }
+            
+            if ($('#RaisonSociale').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Raison sociale obligatoires!'
+                });
+                return false;
+            }
+            
+            if ($('#Contact').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Contact obligatoires!'
+                });
+                return false;
+            }
+            
+            if ($('#Email').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Email obligatoires!'
+                });
+                return false;
+            }
+            
+            if ($('#Adresse').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Adresse obligatoires!'
+                });
+                return false;
+            }
+            
+            if ($('#Tel1').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Tel1 obligatoires!'
+                });
+                return false;
+            }
+            
+            if ($('#Tel2').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Tel2 obligatoires!'
+                });
+                return false;
+            }
+            
+            if ($('#MatriculeFiscale').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Matricule fiscale obligatoires!'
+                });
+                return false;
+            }
+            
+            if ($('#NbSociete').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Nb Societe obligatoires!'
+                });
+                return false;
+            }
+            
+            if ($('#DateCreation').val() == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Date creation obligatoires!'
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+    </script>
+
+</body>
+
+</html>

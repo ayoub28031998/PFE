@@ -1,0 +1,130 @@
+﻿@model ComptabilitePFE.PieceComptable
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm())
+{
+    <br />
+    <div class="card card-blue  mx-auto " style="width:100%">
+
+        <div class="card-header">
+            <div class="row">
+                <h1 class="card-title">Piece comptable/Create</h1>
+                <a href="@Url.Action("Index","pieceComptables")" class="btn btn-tool ml-auto"><i class="fas fa-times"></i></a>
+            </div>
+
+
+
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+
+        <div class="card-body">
+            <form>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="row">
+                    <div class="form-group  col-md-2">
+                        <label class="control-label " for="pieceComptable_CodePiece">CodePiece</label>
+                        <div>
+                            <input class="form-control CodePiece text-box single-line" id="pieceComptable_CodePiece" name="pieceComptable.CodePiece" type="text" disabled value="@Model.CodePiece">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="pieceComptable.CodePiece" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    @*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*@
+                    <div class="form-group col-md-9">
+                        <label class="control-label" for="pieceComptable_LibelleEcriture">LibelleEcriture</label>
+                        <div>
+                            <input class="form-control LibelleEcriture text-box single-line" id="pieceComptable_LibelleEcriture" name="pieceComptable.LibelleEcriture" type="text" disabled value="@Model.LibelleEcriture">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="pieceComptable.LibelleEcriture" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label" for="pieceComptable_CodeJournal">CodeJournal</label>
+                        <div class="col-md-10">
+                            <input class="form-control CodePiece text-box single-line" id="pieceComptable_CodePiece" name="pieceComptable.CodePiece" type="text" disabled value="@Model.CodeJournal">
+
+                            <span class="field-validation-valid text-danger" data-valmsg-for="pieceComptable.CodeJournal" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-4">
+                        <label class="control-label" for="pieceComptable_TotalPiece">TotalPiece</label>
+                        <div class="col-md-10">
+                            <input class="form-control TotalPiece text-box single-line" disabled value="@Model.TotalPiece">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="pieceComptable.TotalPiece" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <div class="form-group  col-md-4 ">
+                        <label class="control-label" for="pieceComptable_DateEcriture">DateEcriture</label>
+                        <div class="col-md-10">
+                            <input class="form-control DateEcriture text-box single-line" data-val="true" data-val-date="The field DateEcriture must be a date." data-val-required="The DateEcriture field is required." id="pieceComptable_DateEcriture" name="pieceComptable.DateEcriture" disabled type="date" value="@(Model.DateEcriture.ToString("yyyy-MM-dd"))">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="pieceComptable.DateEcriture" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="input-group mb-3 ligneElement">
+                    <input disabled value="N-Compte" type="text" name="NumeroCompte" class="form-control m-input NumeroCompte" style="width: 12%">
+                    <input disabled value="N-Ordre" type="text" name="NumeroOrdre" class="form-control m-input NumeroOrdre" style="width: 12%">
+                    <input disabled value="Debit" type="text" name="Debit" class="form-control m-input Debit" style="width: 12%">
+                    <input disabled value="Credit" type="text" name="Credit" class="form-control m-input Credit" style="width: 12%">
+                    <input disabled value="Reference" type="text" name="Reference" class="form-control m-input Reference" style="width: 12%">
+                    <input disabled value="N-Lettrage" type="text" name="NumeroLettrage" class="form-control m-input NumeroLettrage" style="width: 12%">
+                    <input disabled value="N-Rapprochement" type="text" name="NumeroRapprochement" class="form-control m-input NumeroRapprochement" style="width: 12%">
+                </div>
+
+                <div class="form-group">
+                    <hr />
+
+                    <div id="newRow">
+                        <div id="inputFormRow">
+                            @foreach (var lp in Model.LignePieceComptables)
+                            {
+                                <div class="input-group mb-3 ligneElement">
+                                    <input disabled value="@lp.NumeroCompte" type="text" name="NumeroCompte" class="form-control m-input NumeroCompte" style="width: 12%">
+                                    <input disabled value="@lp.NumeroOrdre" type="text" name="NumeroOrdre" class="form-control m-input NumeroOrdre" style="width: 12%">
+                                    <input disabled value="@lp.Debit" type="text" name="Debit" class="form-control m-input Debit" style="width: 12%">
+                                    <input disabled value="@lp.Credit" type="text" name="Credit" class="form-control m-input Credit" style="width: 12%">
+                                    <input disabled value="@lp.Reference" type="text" name="Reference" class="form-control m-input Reference" style="width: 12%">
+                                    <input disabled value="@lp.NumeroLettrage" type="text" name="NumeroLettrage" class="form-control m-input NumeroLettrage" style="width: 12%">
+                                    <input disabled value="@lp.NumeroRapprochement" type="text" name="NumeroRapprochement" class="form-control m-input NumeroRapprochement" style="width: 12%">
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div id="lastRowDiv">
+                        <div id="lastRow">
+                            <div class="input-group mb-3">
+                                <input type="text" name="NumeroCompte" class="form-control m-input NumeroCompte" autocomplete="off" style="width: 12%" disabled>
+                                <input type="text" class="form-control m-input" value="Total :" autocomplete="off" style="width: 12%" disabled>
+                                <input type="text" id="lastRowDebit" class="form-control m-input Debit" value="@Model.LignePieceComptables.Sum(lp => lp.Debit)" autocomplete="off" style="width: 12%" disabled>
+                                <input type="text" id="lastRowCredit" class="form-control m-input Credit" value="@Model.LignePieceComptables.Sum(lp => lp.Credit)" autocomplete="off" style="width: 12%" disabled>
+                                <input type="text" name="Reference" class="form-control m-input Reference" autocomplete="off" style="width: 12%" disabled>
+                                <input type="text" name="NumeroLettrage" class="form-control m-input NumeroLettrage" autocomplete="off" style="width: 12%" disabled>
+                                <input type="text" name="NumeroRapprochement" class="form-control m-input NumeroRapprochement" autocomplete="off" style="width: 12%" disabled>
+                                <div class="input-group-append">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-footer">
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" id="editButton" onclick="location.href='@Url.Action("edit", new { id = Model.CodePiece, cs = Model.CodeSociete, ce = Model.CodeExercice, cj = Model.CodeJournal })'" class="btn btn-outline-success">Modifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

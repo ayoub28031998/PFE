@@ -1,0 +1,51 @@
+﻿@model ComptabilitePFE.PieceComptable
+@{
+    ViewBag.Title = "Index";
+    var ListRELEV = ViewData["relever"] as List<PieceComptable>;
+}
+
+
+<table id="example1" class="table table-bordered table-striped table-hover table-head-fixed text-nowrap dtr-inline">
+    <thead>
+        <tr>
+            <th>
+                CodePiece
+            </th>
+            <th>
+                DateEcriture
+            </th>
+            <th>
+                CodeJournal
+            </th>
+            <th>
+                LibelleEcriture
+            </th>
+            <th>
+                NomUtilisateur
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ListRELEV)
+        {
+            <tr id="@item.CodePiece">
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodePiece)
+                </td>
+                <td>
+                    @item.DateEcriture.ToString("dd/M/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodeJournal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LibelleEcriture)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomUtilisateur)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

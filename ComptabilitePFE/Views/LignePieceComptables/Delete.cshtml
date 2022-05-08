@@ -1,0 +1,80 @@
+﻿@model ComptabilitePFE.LignePieceComptable
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>LignePieceComptable</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Debit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Debit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Credit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Credit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reference)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Reference)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateReference)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateReference)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumeroLettrage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumeroLettrage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumeroRapprochement)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumeroRapprochement)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PieceComptable.LibelleEcriture)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PieceComptable.LibelleEcriture)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

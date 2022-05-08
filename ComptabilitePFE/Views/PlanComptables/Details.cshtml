@@ -1,0 +1,60 @@
+﻿@model ComptabilitePFE.PlanComptable
+
+@{
+    ViewBag.Title = "Details";
+}
+<br />
+
+<div class="card card-info cardWidth mx-auto">
+    <div class="card-header">
+        <h3 class="card-title"><b>Compte/Detail</b></h3>
+        <a href="@Url.Action("Index","PlanComptables")" class="btn btn-tool mt-0" style="float:right"><i class="fas fa-times"></i></a>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NumeroCompte, htmlAttributes: new { @class = "control-label col-md-8" })
+
+                    @Html.EditorFor(model => model.NumeroCompte, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+
+
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Libelle, htmlAttributes: new { @class = "control-label col-md-8" })
+
+                    @Html.EditorFor(model => model.Libelle, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.Libelle, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-4">
+
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.TypeCompte, htmlAttributes: new { @class = "control-label col-md-8" })<br />
+
+                   
+                      <div>  @Html.RadioButtonFor(m => m.TypeCompte, "r", new { disabled = "disabled" })<label>Racine</label> </div>
+                      <div>   @Html.RadioButtonFor(m => m.TypeCompte, "a", new { disabled = "disabled" }) <label>Auxiliaire</label> </div>
+                      <div>  @Html.RadioButtonFor(m => m.TypeCompte, "m", new { disabled = "disabled" }) <label>Mouvement</label></div>
+                   
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="col-md-offset-2 col-md-10">
+            <a href="@Url.Action("Edit","PlanComptables" , new { id = Model.NumeroCompte, cs = Model.CodeSociete })" class="btn btn-outline-warning">Edit</a>
+
+        </div>
+    </div>
+</div>
+
+
+

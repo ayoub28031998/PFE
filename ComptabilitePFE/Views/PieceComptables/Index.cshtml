@@ -1,0 +1,141 @@
+﻿@model IEnumerable<ComptabilitePFE.PieceComptable>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+@if (TempData["AlertMessage"] != null)
+{
+
+    <div class="alert alert-default-info alert-fixed">
+        <strong>Success !</strong>@TempData["AlertMessage"]
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+    <style>
+        .alert-fixed {
+            position: fixed;
+            top: 100px;
+            width: 20%;
+            right: 20px;
+            z-index: 9999;
+            border-radius: 0px
+        }
+    </style>
+}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"><b>Liste des écritures comptables</b></h3>
+
+        <button class="btn btn-outline-success float-right" value="Create New" onclick="location.href='@Url.Action("Create", "PieceComptableLignes")'"><i class='fa fa-plus'></i></button>
+    </div>
+
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped table-hover table-head-fixed text-nowrap dtr-inline">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CodePiece)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateEcriture)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CodeJournal)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LibelleEcriture)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NomUtilisateur)
+                    </th>
+                    <th>parametres</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr id="@item.CodePiece">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CodePiece)
+                    </td>
+                    <td>
+                        @item.DateEcriture.ToString("dd/M/yyyy")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CodeJournal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LibelleEcriture)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NomUtilisateur)
+                    </td>
+                    <td>
+                        <center>
+
+                            <button class="btn btn-outline-warning btn-sm" onclick="location.href='@Url.Action("Edit", "PieceComptables",  new {id = item.CodePiece , cs = item.CodeSociete, ce=item.CodeExercice, cj = item.CodeJournal})'"><i class='fa fa-pen-square'></i></button>
+                            <button class="btn btn-outline-info btn-sm" value="Details" onclick="location.href='@Url.Action("Details", "PieceComptables",  new {id = item.CodePiece , cs = item.CodeSociete, ce=item.CodeExercice, cj = item.CodeJournal})'"><i class='fa fa-info-circle'></i></button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteButtonClicked('@item.CodePiece', '@item.CodeSociete', '@item.CodeJournal', '@item.CodeExercice')"><i class='fa fa-trash'></i> </button>
+
+                        </center>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/FrontEND/plugins/sweetalert2/sweetalert2.all.js"></script>
+    <script>
+        function deleteButtonClicked(codePiece, codeSociete, codeJournal, codeExercice) {
+            Swal.fire({
+                title: 'Vérification?',
+                text: "Voulez vous vraiment supprimer cette piéce!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Annuler',
+                confirmButtonText: 'Oui'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '@Url.Action("delete","PieceComptables")',
+                        type: 'post',
+                        data: {
+                            codePiece,
+                            codeExercice,
+                            codeJournal,
+                            codeSociete
+                        },
+                        success: function (result) {
+                            if (result == 'success') {
+
+                                Swal.fire(
+                                    'Succés!',
+                                    'Piéce supprimée avec succés.',
+                                    'success'
+                                ).then(() => $(document.getElementById(codePiece)).remove());
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erreur',
+                                    text: 'Une erreur s\'est produite, contactez l\'administrateur!'
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,88 @@
+﻿@model ComptabilitePFE.PlanComptable
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h4>Plan Comptables</h4>
+<hr />
+
+<div class="card card-danger cardWidth mx-auto">
+    <div class="card-header">
+        <h3 class="card-title"><b>Delete</b></h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.NumeroCompte)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.NumeroCompte)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Libelle)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Libelle)
+                    </dd>
+
+
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <center>
+                    <div class="form-group ">
+                        @Html.LabelFor(model => model.TypeCompte, htmlAttributes: new { @class = "control-label col-md-8" })
+
+                        <table>
+                            <tr>
+                                <td>
+                                    @Html.RadioButtonFor(m => m.TypeCompte, "r", new { disabled = "disabled" })
+                                </td>
+                                <td>
+                                    Racine
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.RadioButtonFor(m => m.TypeCompte, "a", new { disabled = "disabled" })
+                                </td>
+                                <td>
+                                    Auxiliaire
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.RadioButtonFor(m => m.TypeCompte, "m", new { disabled = "disabled" })
+                                </td>
+                                <td>
+                                    Mouvement
+                                </td>
+                            </tr>
+                        </table>
+                      
+                    </div>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                <a href="@Url.Action("Index","PlanComptables")" class="btn btn-outline-secondary">BackToList</a>
+            </div>
+        }
+    </div>
+</div>
+
+

@@ -1,0 +1,78 @@
+﻿@model ComptabilitePFE.Exercice
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<br />
+<div class="card card-info cardWidth mx-auto">
+    <div class="card-header">
+        <h3 class="card-title"><b>Exercice/Details</b></h3>
+        <a href="@Url.Action("Index","Exercices")" class="btn btn-tool mt-0" style="float:right"><i class="fas fa-times"></i></a>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-md-7">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label" for="CodeExercice">Code exercice</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control text-box single-line" data-val="true" data-val-length="Name length can't be more than 8." data-val-length-max="4" data-val-required="Ce champ est obligatoire" disabled="disabled" id="CodeExercice" name="CodeExercice" type="text" value="@Model.CodeExercice">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="CodeExercice" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label" for="DateDebut">DateDebut</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field DateDebut must be a date." data-val-required="Ce champ est obligatoire" disabled="disabled" id="DateDebut" name="DateDebut" type="date" value="@Model.DateDebut.ToString("yyyy-MM-dd")">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="DateDebut" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label" for="DateFin">DateFin</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field DateFin must be a date." data-val-required="Ce champ est obligatoire" disabled="disabled" id="DateFin" name="DateFin" type="date" value="@Model.DateFin.ToString("yyyy-MM-dd")">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="DateFin" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+                &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;
+                <div class="col-md-4">
+                    <label class="control-label" for="TypeSaisie">TypeSaisie</label>
+                    <hr />
+                    <div class="col-md-10">
+                        <div>
+                            <label class="btn active">
+                                <input disabled="disabled" id="TypeSaisie" name="TypeSaisie" type="radio" value="m" @(Model.TypeSaisie.ToUpper().StartsWith("M") ? "checked" : "")> Mensuel
+                            </label>
+
+                            <label class="btn">
+                                <input disabled="disabled" id="TypeSaisie" name="TypeSaisie" type="radio" value="J" @(Model.TypeSaisie.ToUpper().StartsWith("J") ? "checked" : "")>Journaliere
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="/Exercices/Edit/2020/000001" class="btn btn-outline-warning">Edit</a>
+
+        </div>
+
+
+    </form>
+</div>

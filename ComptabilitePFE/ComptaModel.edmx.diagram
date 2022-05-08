@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4bf08e9ba48b4a4a863ecf3ed8a6a9c6" Name="Diagram1" ZoomLevel="75">
+        <EntityTypeShape EntityType="I2S_Compta2Model.Client" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.Exercice" Width="1.5" PointX="2.75" PointY="4.75" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.Journal" Width="1.5" PointX="4.75" PointY="4.75" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.LignePieceComptable" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.ParametrageBilan" Width="1.5" PointX="3" PointY="1.5" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.ParametrageEtatResultat" Width="1.5" PointX="6.75" PointY="5.75" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.PieceComptable" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.PlanComptable" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.RubriqueBilan" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.RubriqueEtatResultat" Width="1.5" PointX="2.75" PointY="8.75" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.Societe" Width="1.5" PointX="8.75" PointY="4.75" />
+        <EntityTypeShape EntityType="I2S_Compta2Model.Utilisateur" Width="1.5" PointX="4.75" PointY="8.75" />
+        <AssociationConnector Association="I2S_Compta2Model.FK_ParametrageBilan_RubriqueBilan" />
+        <AssociationConnector Association="I2S_Compta2Model.FK_Exercice_Exercice" />
+        <AssociationConnector Association="I2S_Compta2Model.FK_Journal_Societe" />
+        <AssociationConnector Association="I2S_Compta2Model.FK_LignePieceComptable_PieceComptable" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
